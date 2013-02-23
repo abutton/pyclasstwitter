@@ -430,23 +430,77 @@ li {
                                                             <div mc:edit="std_content00">
                                                                 <h1 class="h1">Insights, musings, and food (LOTS of it) from the Plone Emerald Sprint</h1>
                                                            <ul>
-                                                            {% for tweet in tweets %}
+                                                            
                                                             <li>
                                                               <div class="tweets">
-                                                              <img src="{{ tweet.profile_image }}" class="avatar"  width="48" height="48">
+                                                              <img src="http://a0.twimg.com/profile_images/2205602866/trendingnews_normal.png" class="avatar"  width="48" height="48">
                                                               <div class="tweet-body">
                                                                 <div class="tweet-header">
-                                                                  <span class="real_name">{{ tweet.real_name }}</span> <span class="screen_name">@{{ tweet.screen_name }}</span>
-                                                                  <span class="created_at">{{tweet.created_at}}</span>
+                                                                  <span class="real_name">Trending News</span> <span class="screen_name">@trends_news</span>
+                                                                  <span class="created_at">23 Feb -- 14:15:17</span>
                                                                 </div>
-                                                                <p>{{ tweet.text }}</p>
+                                                                <p>Drone Pilots Found to Get Stress Disorders Much as Those in Combat Do: A study has shown that... http://t.co/AiWWPGpY2O #trending #news</p>
                                                               </div>
                                                               </div>
                                                             </li>
-                                                            {% if tweet.media %}
-                                                              <img src="{{ tweet.media }}" class="tweet-images">
-                                                            {% endif %}
-                                                            {% endfor %}
+                                                            
+                                                            
+                                                            <li>
+                                                              <div class="tweets">
+                                                              <img src="http://a0.twimg.com/profile_images/3292419943/e828aec8beaf71283866b6849484a1f4_normal.jpeg" class="avatar"  width="48" height="48">
+                                                              <div class="tweet-body">
+                                                                <div class="tweet-header">
+                                                                  <span class="real_name">melliner lawrence</span> <span class="screen_name">@femalebossmel</span>
+                                                                  <span class="created_at">23 Feb -- 14:09:03</span>
+                                                                </div>
+                                                                <p>@LilTwist  follow me #CONTACT #Trending  can't wait, love u XO #dope</p>
+                                                              </div>
+                                                              </div>
+                                                            </li>
+                                                            
+                                                            
+                                                            <li>
+                                                              <div class="tweets">
+                                                              <img src="http://a0.twimg.com/profile_images/3282248091/fdfe2be55133c47a67671fb8ba76f964_normal.jpeg" class="avatar"  width="48" height="48">
+                                                              <div class="tweet-body">
+                                                                <div class="tweet-header">
+                                                                  <span class="real_name">Tiffany Widiatamy</span> <span class="screen_name">@fanykyon</span>
+                                                                  <span class="created_at">23 Feb -- 14:04:41</span>
+                                                                </div>
+                                                                <p>"@endykurniawan: #AHERlem Shake #trending"</p>
+                                                              </div>
+                                                              </div>
+                                                            </li>
+                                                            
+                                                            
+                                                            <li>
+                                                              <div class="tweets">
+                                                              <img src="http://a0.twimg.com/profile_images/2807846631/f634241568065fd581b5917d42eb1e85_normal.png" class="avatar"  width="48" height="48">
+                                                              <div class="tweet-body">
+                                                                <div class="tweet-header">
+                                                                  <span class="real_name">Twittie</span> <span class="screen_name">@twittiecom</span>
+                                                                  <span class="created_at">23 Feb -- 14:00:24</span>
+                                                                </div>
+                                                                <p>Ricky Gervais| Rumours on the Bible http://t.co/JcgbN75FAg #trending</p>
+                                                              </div>
+                                                              </div>
+                                                            </li>
+                                                            
+                                                            
+                                                            <li>
+                                                              <div class="tweets">
+                                                              <img src="http://a0.twimg.com/profile_images/3258312331/7a0da80c64f26cf3b460770d517eb3fb_normal.jpeg" class="avatar"  width="48" height="48">
+                                                              <div class="tweet-body">
+                                                                <div class="tweet-header">
+                                                                  <span class="real_name">endy kurniawan</span> <span class="screen_name">@endykurniawan</span>
+                                                                  <span class="created_at">23 Feb -- 13:58:23</span>
+                                                                </div>
+                                                                <p>#AHERlem Shake #trending</p>
+                                                              </div>
+                                                              </div>
+                                                            </li>
+                                                            
+                                                            
                                                           </ul>
     
                                                             </div>
@@ -474,19 +528,99 @@ li {
             </table>
             <nav role="pagination">
 				<div>
-				{% if page_data.prev_page %}
-				<a href="snuf_{{ page_data.current_page - 1 }}.html">&larr;</a>
-				{% endif %}
-				{% for number in range(page_data.total_pages) %}
-				  {% if number + 1 == page_data.current_page %}
-				    {{ page_data.current_page }}
-				  {% else %}
-				    <a href="snuf_{{ number + 1 }}.html">{{ number + 1 }}</a>
-				  {% endif %}
-				{% endfor %}
-				{% if page_data.next_page %}
-				<a href="snuf_{{ page_data.current_page + 1 }}.html">&rarr;</a>
-				{% endif %}
+				
+				<a href="snuf_21.html">&larr;</a>
+				
+				
+				  
+				    <a href="snuf_1.html">1</a>
+				  
+				
+				  
+				    <a href="snuf_2.html">2</a>
+				  
+				
+				  
+				    <a href="snuf_3.html">3</a>
+				  
+				
+				  
+				    <a href="snuf_4.html">4</a>
+				  
+				
+				  
+				    <a href="snuf_5.html">5</a>
+				  
+				
+				  
+				    <a href="snuf_6.html">6</a>
+				  
+				
+				  
+				    <a href="snuf_7.html">7</a>
+				  
+				
+				  
+				    <a href="snuf_8.html">8</a>
+				  
+				
+				  
+				    <a href="snuf_9.html">9</a>
+				  
+				
+				  
+				    <a href="snuf_10.html">10</a>
+				  
+				
+				  
+				    <a href="snuf_11.html">11</a>
+				  
+				
+				  
+				    <a href="snuf_12.html">12</a>
+				  
+				
+				  
+				    <a href="snuf_13.html">13</a>
+				  
+				
+				  
+				    <a href="snuf_14.html">14</a>
+				  
+				
+				  
+				    <a href="snuf_15.html">15</a>
+				  
+				
+				  
+				    <a href="snuf_16.html">16</a>
+				  
+				
+				  
+				    <a href="snuf_17.html">17</a>
+				  
+				
+				  
+				    <a href="snuf_18.html">18</a>
+				  
+				
+				  
+				    <a href="snuf_19.html">19</a>
+				  
+				
+				  
+				    <a href="snuf_20.html">20</a>
+				  
+				
+				  
+				    <a href="snuf_21.html">21</a>
+				  
+				
+				  
+				    22
+				  
+				
+				
 				</div>
 			</nav>
         </center>

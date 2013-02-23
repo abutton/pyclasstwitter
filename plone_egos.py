@@ -1,23 +1,21 @@
 import requests
-import urllib
 from jinja2 import Environment, FileSystemLoader
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEImage import MIMEImage
-import smtplib
-import premailer
 import os
+import shutil
 
-def send_hashtag_report(hashtag, email_to):
+
+def send_hashtag_report(hashtag, length):
+    """create the page from the twitter hashtag based on length"""
+    if os.path.exists('www'):
+        delete_files()
     tweets = get_tweets(hashtag)
-    avatars, tweet_images = get_images(tweets)
-    html_email, plain_email = prepare_email(tweets)
-    send_email(email_to, "smtp.gmail.com", 587, "nbpyclasstest@gmail.com", 
-               "Emerald Sprint Report", html_email, plain_email, avatars, tweet_images)
-    delete_files(avatars, tweet_images)
-    print "Success!"
+    write_webpage(tweets, length)
+    print "Booyah!"
+
 
 def get_tweets(hashtag):
+    """send in a hashtag without # tag.  it is hardcoded
+    """
     print "Retrieving tweets..."
     tweet_list = []
     search_url = "http://search.twitter.com/search.json?q=%23{0}&include_entities=true".format(hashtag)
@@ -47,78 +45,43 @@ def get_tweets(hashtag):
             next_page = False
     return tweet_list
 
-def get_images(tweet_list):
-    print "Downloading images..."
-    avatars_downloaded = []
-    tweet_images_downloaded = []
-    for tweet in tweet_list:
-        if tweet['screen_name'] not in avatars_downloaded:
-            urllib.urlretrieve(tweet['profile_image'], '{0}_av'.format(tweet['screen_name']))
-            avatars_downloaded.append(tweet['screen_name'])
-        if tweet['media']:
-            urllib.urlretrieve(tweet['media'], '{0}_im'.format(tweet['id']))
-            tweet_images_downloaded.append('{0}_im'.format(tweet['id']))
-    return avatars_downloaded, tweet_images_downloaded
 
-def prepare_email(tweets):
-    print "Preparing email..."
+def chunks(l, n):
+    """Takes tweet list and chunks it into a list of lists based on the number chosen"""
+    return [l[i:i + n] for i in range(0, len(l), n)]
+
+
+def write_webpage(tweets, length):
+    """Writes based on tweet list and how many tweets you want
+    Page data is formed here for use in pagification"""
+    print "Preparing web page..."
     env = Environment(loader=FileSystemLoader('templates'))
     html_template = env.get_template('simple-basic.html')
-    plain_template = env.get_template('plaintext_email')
-    html_email = html_template.render(tweets=tweets)
-    plain_email = plain_template.render(tweets=tweets)
-    # Converts all css stylings from those in the <head></head> into inline styling
-    # so the email client doesn't rip them out.
-    html_email = premailer.transform(html_email)
-    return html_email, plain_email
+    if not os.path.exists('www'):
+        os.makedirs('www')
+    i = 1
+    sliced_tweets = chunks(tweets, length)
+    for chunk in sliced_tweets:
+        page_data = {'prev_page': False, 'next_page': False}
+        page_data['current_page'] = i
+        page_data['total_pages'] = len(sliced_tweets)
+        if len(sliced_tweets) != i:
+            page_data['next_page'] = True
+        if i != 1:
+            page_data['prev_page'] = True
+        page_data['next_page_num'] = i + 1
+        page_data['prev_page_num'] = i - 1
+        webpage = html_template.render(tweets=chunk, page_data=page_data).encode('utf-8')
+        with open('www/snuf_%s.html' % i, 'wb') as f:
+            f.write(webpage)
+        i += 1
 
-def send_email(addresses, host, port, from_address, subject, html_email,
-               plain_email, avatars, tweet_images):
-    password = raw_input('Password: ')
-    print "Sending email..."
-    msgRoot = MIMEMultipart('related')
-    msgRoot['Subject'] = subject
-    msgRoot['From'] = from_address
-    msgRoot['To'] = ', '.join(addresses)
-    msgRoot.epilogue = ''
 
-    msgAlternative = MIMEMultipart('alternative')
-    msgRoot.attach(msgAlternative)
-
-    msgText = MIMEText(plain_email.encode('utf-8'))
-    msgAlternative.attach(msgText)
-
-    msgText = MIMEText(html_email.encode('utf-8'), 'html')
-    msgAlternative.attach(msgText)
-
-    for avatar in avatars:
-        with open("{0}_av".format(avatar), 'rb') as fp:
-            msgImage = MIMEImage(fp.read())
-            msgImage.add_header('Content-ID', '<{0}_av>'.format(avatar))
-            msgRoot.attach(msgImage)
-    for tweet_image in tweet_images:
-        with open(tweet_image, 'rb') as fp:
-            msgImage = MIMEImage(fp.read())
-            msgImage.add_header('Content-ID', '<{0}>'.format(tweet_image))
-            msgRoot.attach(msgImage)
-    with open("plone-logo.png", 'rb') as fp:
-        msgImage = MIMEImage(fp.read())
-        msgImage.add_header('Content-ID', '<plone-logo.png>')
-        msgRoot.attach(msgImage)    
-
-    session = smtplib.SMTP(host, port)
-    session.starttls()
-    session.login(from_address, password)
-    session.sendmail(from_address, addresses, msgRoot.as_string())
-    session.quit()
-
-def delete_files(avatars, tweet_images):
+def delete_files():
+    """Deletes file www from the filesystem"""
     print "Cleaing up directory..."
     dir_path = os.path.abspath(os.path.dirname(__file__))
-    for avatar in avatars:
-        os.remove(dir_path + "/" + "{0}_av".format(avatar))
-    for tweet_image in tweet_images:
-        os.remove(dir_path + "/" + tweet_image)
+    shutil.rmtree(dir_path + "/www")
 
 if __name__ == '__main__':
-    send_hashtag_report("emeraldsprint", ["james.sutterfield@gmail.com"])
+    send_hashtag_report("trending", 10)
